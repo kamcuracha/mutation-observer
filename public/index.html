@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Express</title>
+</head>
+<body>
+  <ul class="summary">
+    <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugiat sint repellendus nihil vitae blanditiis ipsa? Ipsum non, itaque, odio rerum provident amet aliquam harum odit eum cum saepe hic ab.</li>
+    <li>
+      Example
+      <ul>
+        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet officiis temporibus, similique ipsum rem cum repellendus incidunt dolorem nesciunt iste omnis odio eos ratione, dignissimos, architecto quo rerum sapiente. Omnis.
+        Doloremque voluptates, architecto ipsa quisquam esse quasi quibusdam similique, deleniti, nihil omnis amet pariatur. Hic distinctio, harum, sint vel asperiores temporibus fuga ea aspernatur iste porro aliquid, perspiciatis enim quae!
+        Exercitationem repellendus eius aut molestiae dolor alias adipisci cumque dicta asperiores quos. Corporis, perspiciatis, omnis iure cum qui nam recusandae, deleniti reiciendis dignissimos aperiam ut nostrum adipisci ea placeat minus!
+        Assumenda harum dolore nostrum fugit nam eligendi laborum, aspernatur sapiente quae provident odio, maxime ipsa! Deleniti, nihil deserunt! Exercitationem, saepe! Dolorum impedit eligendi a magnam, reiciendis hic doloribus tempora cumque?
+        Obcaecati neque tempora animi beatae. Voluptatem, ab, ad rerum inventore eaque alias quae amet rem facere quibusdam incidunt blanditiis velit animi esse dolor vel fugit error cumque, voluptates quisquam nemo!</li>
+        <li>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti saepe aut ab natus placeat. Sequi libero quo assumenda facilis quasi, alias, expedita illum rerum mollitia suscipit nihil sit repudiandae molestiae!</li>
+      </ul>
+    </li>
+    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio amet quod exercitationem atque quasi at sit eos, asperiores libero molestias minus obcaecati voluptatibus repellat tempore aut soluta necessitatibus nemo aliquam.</li>
+  </ul>
+
+  <script>
+    const listEl = document.querySelector('.summary');
+
+    /*
+      1. Make a new Mutation object
+      2. Tell it what DOM to observe
+      3. What to do with the observed changes/mutations
+    */
+
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(record => { // 3
+        console.log('record', record);
+
+        if (record.type === 'attributes') {
+          const changedAttributeName = record.attributeName;
+          const newValue = record.target.getAttribute(changedAttributeName);
+
+          console.log(`Attribute changed! New value for ${changedAttributeName} : ${newValue}`);
+
+        }
+      });
+    }); // 1
+
+    observer.observe(listEl, { // 2
+      attributes: true,
+      attributeFilter: ['class'],
+      attributeOldValue: true
+    });
+
+    setTimeout(_ => {
+      listEl.setAttribute('id', 'randomId');
+      listEl.classList.add('summary');
+    }, 1000);
+
+    setTimeout(_ => {
+      listEl.setAttribute('class', 'woootang ');
+    }, 999);
+  </script>
+</body>
+</html>
