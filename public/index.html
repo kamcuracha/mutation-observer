@@ -32,34 +32,31 @@
       3. What to do with the observed changes/mutations
     */
 
-    const observer = new MutationObserver(mutations => {
-      mutations.forEach(record => { // 3
-        console.log('record', record);
-
-        if (record.type === 'attributes') {
-          const changedAttributeName = record.attributeName;
-          const newValue = record.target.getAttribute(changedAttributeName);
-
-          console.log(`Attribute changed! New value for ${changedAttributeName} : ${newValue}`);
-
+    const callback = function(mutationsList, observer) {
+      // Use traditional 'for loops' for IE 11
+      for(let mutation of mutationsList) {
+        if (mutation.type === 'childList') {
+          console.log('A child node has been added or removed.');
         }
-      });
-    }); // 1
+        else if (mutation.type === 'attributes') {
+          console.log('The ' + mutation.attributeName + ' attribute was modified.');
+        }
+      }
+    };
+
+    const observer = new MutationObserver(callback); // 1
 
     observer.observe(listEl, { // 2
-      attributes: true,
-      attributeFilter: ['class'],
-      attributeOldValue: true
+      childList: true
     });
 
     setTimeout(_ => {
-      listEl.setAttribute('id', 'randomId');
-      listEl.classList.add('summary');
-    }, 1000);
+      listEl.removeChild(listEl.firstElementChild);
 
-    setTimeout(_ => {
-      listEl.setAttribute('class', 'woootang ');
-    }, 999);
+      const newListChildEl = document.createElement('li');
+      newListChildEl.textContent = 'sup yall';
+      listEl.appendChild(newListChildEl);
+    }, 1000);
   </script>
 </body>
 </html>
